@@ -4,6 +4,7 @@ TELBOTOKEN="123456789:AAA..."
 TELCHATID="123456789"
 BCPURL="https://polling.burpcollaborator.net/burpresults?biid=abcdef..."
 TZDATE="America/Sao_Paulo"
+MSGSIZE="4096"
 DELAY="2"
 
 while true; do
