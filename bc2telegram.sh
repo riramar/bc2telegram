@@ -4,7 +4,7 @@ TELBOTOKEN="123456789:AAA..."
 TELCHATID="123456789"
 BCPURL="https://polling.burpcollaborator.net/burpresults?biid=abcdef..."
 TZDATE="America/Sao_Paulo"
-DELAY=2
+DELAY="2"
 
 while true; do
 	RESULTS=$(curl -sk "${BCPURL}")
