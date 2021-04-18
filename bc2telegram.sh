@@ -11,23 +11,23 @@ while true; do
 	if [ "${RESULTS}" != "{}" ]; then
 		echo "${RESULTS}" | jq -cM '.responses[]' | \
 		while read LINE; do
-			DATETIME=$(echo ${LINE} | jq -rM '.time' | TZ="${TZDATE}" date)
-			PROTOCOL=$(echo ${LINE} | jq -rM '.protocol')
-			SOURCEIP=$(echo ${LINE} | jq -rM '.client')
-			BURPSTRING=$(echo ${LINE} | jq -rM '.interactionString')
+			DATETIME="$(echo ${LINE} | jq -rM '.time' | TZ="${TZDATE}" date)"
+			PROTOCOL="$(echo ${LINE} | jq -rM '.protocol')"
+			SOURCEIP="$(echo ${LINE} | jq -rM '.client')"
+			BURPSTRING="$(echo ${LINE} | jq -rM '.interactionString')"
 			MSG="=====================================\n"
 			MSG+="Time: ${DATETIME}\n"
 			MSG+="Protocol: ${PROTOCOL}\n"
 			MSG+="Source IP: ${SOURCEIP}\n"
 			MSG+="Burp String: ${BURPSTRING}\n"
 			if [ "${PROTOCOL}" == "dns" ]; then
-				DNSTYPE=$(echo ${LINE} | jq -rM '.data.type')
-				SUBDOMAIN=$(echo ${LINE} | jq -rM '.data.subDomain')
+				DNSTYPE="$(echo ${LINE} | jq -rM '.data.type')"
+				SUBDOMAIN="$(echo ${LINE} | jq -rM '.data.subDomain')"
 				MSG+="DNS Type: ${DNSTYPE}\n"
 				MSG+="Subdomain: ${SUBDOMAIN}\n"
 			else
-				HTTPREQUEST=$(echo ${LINE} | jq -rM '.data.request')
-				HTTPRESPONSE=$(echo ${LINE} | jq -rM '.data.response')
+				HTTPREQUEST="$(echo ${LINE} | jq -rM '.data.request')"
+				HTTPRESPONSE="$(echo ${LINE} | jq -rM '.data.response')"
 				MSG+="HTTP Request:\n"
 				MSG+="-----------------------------------------------------------------------------\n"
 				MSG+=$(echo "${HTTPREQUEST}" | base64 -d)
@@ -45,8 +45,8 @@ while true; do
 			OFFSET="0"
 			while [ "${TOTALSIZE}" -gt "0" ]; do
 				curl -s -o /dev/null -X POST -H 'Content-Type: application/json' -d "{\"chat_id\": \"${TELCHATID}\", \"text\": \"${MSG:${OFFSET}:${MSGSIZE}}\"}" "https://api.telegram.org/bot${TELBOTOKEN}/sendMessage"
-				OFFSET=$((${OFFSET}+${MSGSIZE}))
-				TOTALSIZE=$((${TOTALSIZE}-${MSGSIZE}))
+				OFFSET="$((${OFFSET}+${MSGSIZE}))"
+				TOTALSIZE="$((${TOTALSIZE}-${MSGSIZE}))"
 			done
 			
 		done
