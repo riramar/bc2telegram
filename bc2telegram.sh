@@ -59,11 +59,12 @@ while true; do
 			fi
 			MSG+="====================================="
 			echo -e "${MSG}"
-			MSG="${MSG//\"/\\\"}"
 			TOTALSIZE="${#MSG}"
 			OFFSET="0"
 			while [ "${TOTALSIZE}" -gt "0" ]; do
-				curl -s -o /dev/null -X POST -H 'Content-Type: application/json' -d "{\"chat_id\": \"${TELCHATID}\", \"text\": \"${MSG:${OFFSET}:${MSGSIZE}}\"}" "https://api.telegram.org/bot${TELBOTOKEN}/sendMessage"
+				CHUNKMSG="${MSG:${OFFSET}:${MSGSIZE}}"
+				CHUNKMSG="${CHUNKMSG//\"/\\\"}"
+				curl -s -o /dev/null -X POST -H 'Content-Type: application/json' -d "{\"chat_id\": \"${TELCHATID}\", \"text\": \"${CHUNKMSG}\"}" "https://api.telegram.org/bot${TELBOTOKEN}/sendMessage"
 				OFFSET="$((${OFFSET}+${MSGSIZE}))"
 				TOTALSIZE="$((${TOTALSIZE}-${MSGSIZE}))"
 			done
