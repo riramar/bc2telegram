@@ -5,6 +5,7 @@ TELCHATID="123456789"
 BCPURL="https://polling.burpcollaborator.net/burpresults?biid=abcdef..."
 TZDATE="America/Sao_Paulo"
 HTTPFILTER="scaninfo@paloaltonetworks.com"
+DNSFILTER="example.com"
 MSGSIZE="4096"
 DELAY="2"
 
@@ -25,6 +26,12 @@ while true; do
                         if [ "${PROTOCOL}" == "dns" ]; then
                                 DNSTYPE="$(echo ${LINE} | jq -rM '.data.type')"
                                 SUBDOMAIN="$(echo ${LINE} | jq -rM '.data.subDomain')"
+                                if [[ ${SUBDOMAIN} =~ ${DNSFILTER} ]]; then
+                                        continue
+                                else
+                                        MSG+="DNS Type: ${DNSTYPE}\n"
+                                        MSG+="Subdomain: ${SUBDOMAIN}\n"
+                                fi
                                 MSG+="DNS Type: ${DNSTYPE}\n"
                                 MSG+="Subdomain: ${SUBDOMAIN}\n"
                         elif [ "${PROTOCOL}" == "smtp" ]; then
