@@ -26,7 +26,7 @@ while true; do
                         if [ "${PROTOCOL}" == "dns" ]; then
                                 DNSTYPE="$(echo ${LINE} | jq -rM '.data.type')"
                                 SUBDOMAIN="$(echo ${LINE} | jq -rM '.data.subDomain')"
-                                if [[ "${SUBDOMAIN,,}" =~ "${DNSFILTER}" ]]; then
+                                if [[ ${SUBDOMAIN,,} =~ ${DNSFILTER} ]]; then
                                         continue
                                 else
                                         MSG+="DNS Type: ${DNSTYPE}\n"
@@ -54,7 +54,7 @@ while true; do
                         else
                                 HTTPREQUEST="$(echo ${LINE} | jq -rM '.data.request' | base64 -d)"
                                 HTTPRESPONSE="$(echo ${LINE} | jq -rM '.data.response' | base64 -d)"
-                                if [[ "${HTTPREQUEST,,}" =~ "${HTTPFILTER}" ]]; then
+                                if [[ ${HTTPREQUEST,,} =~ ${HTTPFILTER} ]]; then
                                         continue
                                 else
                                         MSG+="HTTP Request:\n"
